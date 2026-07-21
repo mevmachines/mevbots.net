@@ -1,12 +1,12 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @layer components {
-  input[type='number']::-webkit-inner-spin-button,
-  input[type='number']::-webkit-outer-spin-button {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
     @apply appearance-none m-0;
   }
 
-  input[type='number'] {
+  input[type="number"] {
     -moz-appearance: textfield;
   }
 }
@@ -17,7 +17,7 @@
   --breakpoint-3xl: 1560px;
 
   /* Fonts */
-  --font-manrope: 'Manrope', 'sans-serif';
+  --font-manrope: "Manrope", "sans-serif";
 
   /* Brand colors */
   --color-brand-0: #f2f2f9;
@@ -138,7 +138,7 @@
 
 html {
   width: 100vw;
-  font-family: 'Manrope', sans-serif;
+  font-family: "Manrope", sans-serif;
   background: #090909;
   overflow-x: hidden;
 }
@@ -342,4 +342,22 @@ main {
   100% {
     transform: rotate(45deg) rotateX(-385deg) rotateY(385deg);
   }
+}
+
+/* Checkbox */
+input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px;
+  height: 10px;
+  border-right: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: translate(-50%, -60%) rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.1s ease;
+}
+input[type="checkbox"]:checked::before {
+  opacity: 1;
 }
