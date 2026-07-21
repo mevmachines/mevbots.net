@@ -2,11 +2,13 @@ import { useSearch, useNavigate } from "@tanstack/react-router";
 
 import { Route } from "#/routes/_app";
 
-import { LoadingTable, DropdownFilter } from "#/ui";
+import { LoadingTable, SampleFilter } from "#/ui";
 
 import { useMiners, cn, getShortAddress, formatNumber } from "#/utils";
 
 import { PERIOD } from "#/constants";
+
+import { ethereumLogo } from "#/assets";
 
 import type { Period } from "#/types";
 
@@ -87,14 +89,21 @@ const Home = () => {
 
   return (
     <div className="text-white pb-10">
-      <h1 className="font-manrope text-[44px] text-center mt-2 mb-2.5">
-        MEV miners
-      </h1>
+      <div className="flex items-center justify-center gap-2">
+        <img
+          src={ethereumLogo}
+          className="w-14 h-14"
+          alt="Ethereum"
+          title="Ethereum"
+        />
+        <h1 className="font-manrope text-[44px] text-center mt-2 mb-2.5">
+          MEV machines
+        </h1>
+      </div>
 
       <div className="flex items-end justify-end w-full mb-4">
-        <DropdownFilter
-          label="Period"
-          value={period}
+        <SampleFilter
+          activeOption={period}
           options={periodOptions}
           onChange={onChange}
         />
