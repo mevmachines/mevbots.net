@@ -1,16 +1,16 @@
-import axios from 'axios'
+import axios from "axios";
 
-import type { Period } from '#/types'
+import type { Period } from "#/types";
 
 export const fetchMiners = async (period: Period) => {
-  const apiUrl = `https://api.mevbots.net/api/miners?period=${period}`
+  const apiUrl = `https://api.mevbots.net/api/miners?period=${period}`;
 
   try {
-    const request = await axios.get(apiUrl)
+    const request = await axios.get(apiUrl);
 
-    return request.data
+    return request.data;
   } catch (error) {
-    console.warn(`Failed to retrieve API data from ${apiUrl}:`, error)
-    return undefined
+    console.warn(`Failed to retrieve API data from ${apiUrl}:`, error);
+    return undefined;
   }
-}
+};
