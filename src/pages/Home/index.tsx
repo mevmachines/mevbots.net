@@ -89,14 +89,14 @@ const Home = () => {
 
   return (
     <div className="text-white pb-10">
-      <div className="flex items-center justify-center gap-2">
+      <div className="flex items-center justify-center gap-2 mb-4">
         <img
           src={ethereumLogo}
           className="w-14 h-14"
           alt="Ethereum"
           title="Ethereum"
         />
-        <h1 className="font-manrope text-[44px] text-center mt-2 mb-2.5">
+        <h1 className="font-manrope text-[36px] md:text-[44px] text-center mt-2 mb-2.5">
           MEV machines
         </h1>
       </div>
