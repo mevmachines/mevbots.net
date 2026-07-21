@@ -1,24 +1,23 @@
-import { Outlet, createFileRoute } from '@tanstack/react-router'
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// import { Navbar, Menu, Header } from "@components";
+// import {  Menu, Header } from "@components";
 
-import { BgGradient } from '#/ui'
+import { BgGradient } from "#/ui";
 
-export const Route = createFileRoute('/_app')({
+export const Route = createFileRoute("/_app")({
   component: AppLayout,
   ssr: false,
-})
+});
 
 function AppLayout() {
-  const queryClient = new QueryClient()
+  const queryClient = new QueryClient();
 
   return (
     <QueryClientProvider client={queryClient}>
       <div className="layout">
-        {/* <Navbar />
-          <Menu /> */}
+        {/*   <Menu /> */}
         <BgGradient />
         <div className="container">
           {/* <Header /> */}
@@ -28,5 +27,5 @@ function AppLayout() {
         </div>
       </div>
     </QueryClientProvider>
-  )
+  );
 }
