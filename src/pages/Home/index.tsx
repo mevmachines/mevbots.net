@@ -104,17 +104,38 @@ const Home = () => {
 
       <div className="min-h-85 min-w-full lg:min-w-240 xl:min-w-300">
         <div className="overflow-x-auto md:overflow-x-scroll lg:overflow-x-visible overflow-y-hidden scrollbar-thin scrollbar-thumb-[#46484C] scrollbar-track-[#101012] lg:hide-scrollbar">
-          <div className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-100 md:w-full border-b-0">
-            <span className="w-50 md:w-1/2">Account</span>
-            <span className="w-25 md:w-1/4">Profit</span>
-            <span className="w-25 md:w-1/4 text-end">Mined</span>
+          <div
+            className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-full border-b-0"
+            //w-82.5 md:
+          >
+            <span
+              className="w-1/2"
+              //w-50 md:
+            >
+              Account
+            </span>
+            <span
+              className="w-1/4"
+              //w-20 md:
+            >
+              Profit
+            </span>
+            <span
+              className="w-1/4 text-end"
+              //w-12.5 md:
+            >
+              Mined
+            </span>
           </div>
           {isLoading ? (
             <div className="sticky left-0 z-10 md:w-full">
               <LoadingTable />
             </div>
           ) : (
-            <div className="flex flex-col text-[14px] leading-5 bg-[#101012] border-x border-y-0 border-[#23252A] w-100 md:w-full">
+            <div
+              className="flex flex-col text-[14px] leading-5 bg-[#101012] border-x border-y-0 border-[#23252A] w-full"
+              //w-82.5 md:
+            >
               {miners?.length ? (
                 miners?.map(
                   (
@@ -140,14 +161,18 @@ const Home = () => {
                           !index && "border-t",
                         )}
                       >
-                        <span className="w-50 md:w-1/2 text-nowrap font-mono">
+                        <span
+                          className="w-1/2 text-nowrap font-mono"
+                          // w-50 md:
+                        >
                           {name ? name : getShortAddress(addr, 6, 6)}
                         </span>
-                        <span className="w-25 md:w-1/4">
+                        <span className="w-1/4">
+                          {/*w-20 md:*/}
                           {Number(profit) ? formatNumber(profit, "format") : ""}
                         </span>
                         <a
-                          className="w-25 py-4 md:w-1/4 text-end cursor-pointer"
+                          className="py-4 w-1/4 text-end cursor-pointer" // w-12.5
                           href={`http://dao.host/mevbots?tab=Artifacts&miner=${addr}`}
                         >
                           {mevMined}
