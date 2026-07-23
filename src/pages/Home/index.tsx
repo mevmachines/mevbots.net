@@ -115,7 +115,7 @@ const Home = () => {
               Account
             </span>
             <span
-              className="w-1/4"
+              className="w-1/4 text-end"
               //w-20 md:
             >
               Profit
@@ -167,7 +167,7 @@ const Home = () => {
                         >
                           {name ? name : getShortAddress(addr, 6, 6)}
                         </span>
-                        <span className="w-1/4">
+                        <span className="w-1/4 text-end">
                           {/*w-20 md:*/}
                           {Number(profit) ? formatNumber(profit, "format") : ""}
                         </span>
