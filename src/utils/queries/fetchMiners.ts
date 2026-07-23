@@ -2,8 +2,8 @@ import axios from "axios";
 
 import type { Period } from "#/types";
 
-export const fetchMiners = async (period: Period) => {
-  const apiUrl = `https://api.mevbots.net/api/miners?period=${period}`;
+export const fetchMiners = async (period: Period, page = 1, limit = 5) => {
+  const apiUrl = `https://api.mevbots.net/api/miners?period=${period}&page=${page}&limit=${limit}`;
 
   try {
     const request = await axios.get(apiUrl);

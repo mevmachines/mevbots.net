@@ -1,8 +1,10 @@
+import { useState, useEffect } from "react";
+
 import { useSearch, useNavigate } from "@tanstack/react-router";
 
 import { Route } from "#/routes/_app";
 
-import { LoadingTable, SampleFilter } from "#/ui";
+import { LoadingTable, SampleFilter, Pagination } from "#/ui";
 
 import { useMiners, cn, getShortAddress, formatNumber } from "#/utils";
 
@@ -15,20 +17,29 @@ import type { Period } from "#/types";
 const Home = () => {
   const navigate = useNavigate({ from: Route.fullPath });
 
-  const { period }: { period: Period } = useSearch({
+  const {
+    period,
+    page,
+    limit,
+  }: { period: Period; page: number; limit: number } = useSearch({
     from: "/_app",
   });
 
-  const { data, isLoading } = useMiners(period);
+  const [pagination, setPagination] = useState<number>(limit);
+  const [totalMiners, setTotalMiners] = useState<number>(1);
+
+  const { data, isLoading } = useMiners(period, page, pagination);
 
   const miners = data?.data ?? [];
+
+  const apiTotalMiners = data?.total ?? 1;
 
   const periodOptions = Object.values(PERIOD).map((_period) => ({
     label: _period.toUpperCase(),
     value: _period,
   }));
 
-  const onChange = (newPeriod: Period) => {
+  const handlePeriod = (newPeriod: Period) => {
     navigate({
       search: (prev) => ({
         ...prev,
@@ -39,53 +50,35 @@ const Home = () => {
     });
   };
 
-  // const page = 1
-  // const perPage = 20
+  const setPage = (newPage: number) => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        page: newPage,
+      }),
+      replace: true,
+      resetScroll: false,
+    });
+  };
 
-  // const [pagination, setPagination] = useState<number>(perPage)
-  // const [totalItems, setTotalItems] = useState<number>(1)
+  const handlePagination = (newLimit: number) => {
+    setPagination(newLimit);
 
-  // const apiTotalItems = data?.total ?? 1
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        limit: newLimit,
+      }),
+      replace: true,
+      resetScroll: false,
+    });
+  };
 
-  // const setPage = (newPage: number) => {
-  //   navigate({
-  //     search: (prev) => ({
-  //       tab: 'Flights',
-
-  //       flightsPage: newPage,
-  //       flightsPerPage: prev.flightsPerPage,
-
-  //       artifactsPage: undefined,
-  //       artifactsPerPage: undefined,
-  //     }),
-  //     replace: true,
-  //     resetScroll: false,
-  //   })
-  // }
-
-  // const handlePagination = (newPagination: number) => {
-  //   setPagination(newPagination)
-
-  //   navigate({
-  //     search: (prev) => ({
-  //       tab: 'Flights',
-
-  //       flightsPage: prev.flightsPage,
-  //       flightsPerPage: newPagination,
-
-  //       artifactsPage: undefined,
-  //       artifactsPerPage: undefined,
-  //     }),
-  //     replace: true,
-  //     resetScroll: false,
-  //   })
-  // }
-
-  // useEffect(() => {
-  //   if (apiTotalItems && totalItems === 1) {
-  //     setTotalItems(apiTotalItems)
-  //   }
-  // }, [apiTotalItems])
+  useEffect(() => {
+    if (apiTotalMiners && totalMiners === 1) {
+      setTotalMiners(apiTotalMiners);
+    }
+  }, [apiTotalMiners]);
 
   return (
     <div className="text-white pb-10">
@@ -97,7 +90,7 @@ const Home = () => {
           title="Ethereum"
         />
         <h1 className="font-manrope text-[36px] md:text-[44px] text-center mt-2 mb-2.5">
-          MEV machines
+          MEV bots
         </h1>
       </div>
 
@@ -105,16 +98,15 @@ const Home = () => {
         <SampleFilter
           activeOption={period}
           options={periodOptions}
-          onChange={onChange}
+          onChange={handlePeriod}
         />
       </div>
 
       <div className="min-h-85 min-w-full lg:min-w-240 xl:min-w-300">
         <div className="overflow-x-auto md:overflow-x-scroll lg:overflow-x-visible overflow-y-hidden scrollbar-thin scrollbar-thumb-[#46484C] scrollbar-track-[#101012] lg:hide-scrollbar">
-          <div className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-137.5 md:w-full border-b-0">
-            <span className="w-37.5 md:w-1/4">Address</span>
-            <span className="w-25 md:w-1/4 text-end">Name</span>
-            <span className="w-50 md:w-1/4 text-end">Profit</span>
+          <div className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-100 md:w-full border-b-0">
+            <span className="w-50 md:w-1/2">Account</span>
+            <span className="w-25 md:w-1/4">Profit</span>
             <span className="w-25 md:w-1/4 text-end">Mined</span>
           </div>
           {isLoading ? (
@@ -122,7 +114,7 @@ const Home = () => {
               <LoadingTable />
             </div>
           ) : (
-            <div className="flex flex-col text-[14px] leading-5 bg-[#101012] border-x border-t-0 border-b border-[#23252A] w-137.5 md:w-full rounded-b-lg">
+            <div className="flex flex-col text-[14px] leading-5 bg-[#101012] border-x border-y-0 border-[#23252A] w-100 md:w-full">
               {miners?.length ? (
                 miners?.map(
                   (
@@ -143,21 +135,23 @@ const Home = () => {
                       <div
                         key={addr}
                         className={cn(
-                          "flex items-center px-2 md:px-4 py-2 w-full border-b border-[#23252A] h-14",
-                          miners?.length - 1 === index && "rounded-lg",
+                          "flex items-center px-2 md:px-4 border-b py-2 w-full border-[#23252A] h-14",
+                          miners?.length - 1 === index && "border-b-0",
                           !index && "border-t",
                         )}
                       >
-                        <span className="w-37.5 md:w-1/4 text-nowrap font-mono">
-                          {getShortAddress(addr, 6, 6)}
+                        <span className="w-50 md:w-1/2 text-nowrap font-mono">
+                          {name ? name : getShortAddress(addr, 6, 6)}
                         </span>
-                        <span className="w-25 md:w-1/4 text-end">{name}</span>
-                        <span className="w-50 md:w-1/4 text-end">
+                        <span className="w-25 md:w-1/4">
                           {Number(profit) ? formatNumber(profit, "format") : ""}
                         </span>
-                        <span className="w-25 md:w-1/4 text-end">
+                        <a
+                          className="w-25 py-4 md:w-1/4 text-end cursor-pointer"
+                          href={`http://dao.host/mevbots?tab=Artifacts&miner=${addr}`}
+                        >
                           {mevMined}
-                        </span>
+                        </a>
                       </div>
                     );
                   },
@@ -170,16 +164,16 @@ const Home = () => {
             </div>
           )}
         </div>
-        {/* <div className="sticky bottom-0 z-20 md:static">
+        <div className="sticky bottom-0 z-20 md:static">
           <Pagination
             pagination={pagination}
-            items={totalItems}
+            items={totalMiners}
             tab={page}
             setTab={setPage}
             setPagination={handlePagination}
             isLoading={isLoading}
           />
-        </div> */}
+        </div>
       </div>
     </div>
   );

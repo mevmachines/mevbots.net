@@ -11,7 +11,9 @@ import { PERIOD } from "#/constants";
 const periodValues = Object.values(PERIOD);
 
 const searchSchema = z.object({
-  period: z.enum(periodValues).default(PERIOD.WEEK).catch(PERIOD.WEEK),
+  period: z.enum(periodValues).default(PERIOD.DAY).catch(PERIOD.DAY),
+  page: z.coerce.number().int().positive().default(1).catch(1),
+  limit: z.coerce.number().int().positive().default(5).catch(5),
 });
 
 export const Route = createFileRoute("/_app/")({
