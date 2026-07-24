@@ -1,7 +1,7 @@
 {
   "name": "mevbotsnet",
   "private": true,
-  "version": "0.1.4",
+  "version": "0.1.5",
   "type": "module",
   "imports": {
     "#/*": "./src/*"
@@ -17,6 +17,7 @@
     "check": "prettier --check ."
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.20",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",

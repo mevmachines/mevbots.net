@@ -4,13 +4,13 @@ import { useSearch, useNavigate } from "@tanstack/react-router";
 
 import { Route } from "#/routes/_app";
 
-import { LoadingTable, SampleFilter, Pagination } from "#/ui";
+import { LoadingTable, SampleFilter, Pagination, Tooltip } from "#/ui";
 
 import { useMiners, cn, getShortAddress, formatNumber } from "#/utils";
 
 import { PERIOD } from "#/constants";
 
-import { ethereumLogo } from "#/assets";
+import { ethereumLogo, warningIcon } from "#/assets";
 
 import type { Period } from "#/types";
 
@@ -21,29 +21,37 @@ const Home = () => {
     period,
     page,
     limit,
-  }: { period: Period; page: number; limit: number } = useSearch({
+  }: {
+    period: Period | undefined;
+    page: number | undefined;
+    limit: number | undefined;
+  } = useSearch({
     from: "/_app",
   });
 
-  const [pagination, setPagination] = useState<number>(limit);
+  const _paginationLimit = limit ?? 10;
+  const _period = period ?? PERIOD.DAY;
+  const _page = page ?? 1;
+
+  const [pagination, setPagination] = useState<number>(_paginationLimit);
   const [totalMiners, setTotalMiners] = useState<number>(1);
 
-  const { data, isLoading } = useMiners(period, page, pagination);
+  const { data, isLoading } = useMiners(_period, _page, pagination);
 
   const miners = data?.data ?? [];
 
   const apiTotalMiners = data?.total ?? 1;
 
-  const periodOptions = Object.values(PERIOD).map((_period) => ({
-    label: _period.toUpperCase(),
-    value: _period,
+  const periodOptions = Object.values(PERIOD).map((_p: string) => ({
+    label: _p.toUpperCase(),
+    value: _p,
   }));
 
   const handlePeriod = (newPeriod: Period) => {
     navigate({
       search: (prev) => ({
         ...prev,
-        period: newPeriod,
+        period: newPeriod === PERIOD.DAY ? undefined : newPeriod,
       }),
       replace: true,
       resetScroll: false,
@@ -54,7 +62,7 @@ const Home = () => {
     navigate({
       search: (prev) => ({
         ...prev,
-        page: newPage,
+        page: newPage === 1 ? undefined : newPage,
       }),
       replace: true,
       resetScroll: false,
@@ -67,7 +75,7 @@ const Home = () => {
     navigate({
       search: (prev) => ({
         ...prev,
-        limit: newLimit,
+        limit: newLimit === 10 ? undefined : newLimit,
       }),
       replace: true,
       resetScroll: false,
@@ -96,14 +104,17 @@ const Home = () => {
 
       <div className="flex items-end justify-end w-full mb-4">
         <SampleFilter
-          activeOption={period}
+          activeOption={_period}
           options={periodOptions}
           onChange={handlePeriod}
         />
       </div>
 
       <div className="min-h-85 min-w-full lg:min-w-240 xl:min-w-300">
-        <div className="overflow-x-auto md:overflow-x-scroll lg:overflow-x-visible overflow-y-hidden scrollbar-thin scrollbar-thumb-[#46484C] scrollbar-track-[#101012] lg:hide-scrollbar">
+        <div
+          className="scrollbar-thin scrollbar-thumb-[#46484C] scrollbar-track-[#101012] lg:hide-scrollbar"
+          //overflow-x-auto md:overflow-x-scroll lg:overflow-x-visible overflow-y-hidden
+        >
           <div
             className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-full border-b-0"
             //w-82.5 md:
@@ -116,16 +127,21 @@ const Home = () => {
             </span>
             <span
               className="w-1/4 text-end"
-              //w-20 md:
-            >
-              Profit
-            </span>
-            <span
-              className="w-1/4 text-end"
               //w-12.5 md:
             >
               Mined
             </span>
+            <div
+              className="relative w-1/4 cursor-help"
+              //w-20 md:
+            >
+              <Tooltip content="Profit is currently calculated incorrectly.">
+                <div className="flex items-center justify-end gap-1">
+                  <img src={warningIcon} alt="Warning" className="w-5 h-5" />
+                  <span>Profit</span>
+                </div>
+              </Tooltip>
+            </div>
           </div>
           {isLoading ? (
             <div className="sticky left-0 z-10 md:w-full">
@@ -167,16 +183,16 @@ const Home = () => {
                         >
                           {name ? name : getShortAddress(addr, 6, 6)}
                         </span>
-                        <span className="w-1/4 text-end">
-                          {/*w-20 md:*/}
-                          {Number(profit) ? formatNumber(profit, "format") : ""}
-                        </span>
                         <a
                           className="py-4 w-1/4 text-end cursor-pointer" // w-12.5
                           href={`http://dao.host/mevbots?tab=Artifacts&miner=${addr}`}
                         >
                           {mevMined}
                         </a>
+                        <span className="w-1/4 text-end">
+                          {/*w-20 md:*/}
+                          {Number(profit) ? formatNumber(profit, "format") : ""}
+                        </span>
                       </div>
                     );
                   },
@@ -193,7 +209,7 @@ const Home = () => {
           <Pagination
             pagination={pagination}
             items={totalMiners}
-            tab={page}
+            tab={_page}
             setTab={setPage}
             setPagination={handlePagination}
             isLoading={isLoading}
