@@ -1,5 +1,13 @@
-import { seo, cn, getShortAddress, formatNumber } from './functions'
+import { seo, cn, getShortAddress, formatNumber } from "./functions";
 
-import { useMiners, useClickOutside } from './hooks'
+import { useMiners, useClickOutside, useWindowWidth } from "./hooks";
 
-export { seo, useMiners, cn, useClickOutside, getShortAddress, formatNumber }
+export {
+  seo,
+  useMiners,
+  cn,
+  useClickOutside,
+  getShortAddress,
+  formatNumber,
+  useWindowWidth,
+};

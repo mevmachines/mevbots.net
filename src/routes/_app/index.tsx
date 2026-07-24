@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 
 import { z } from "zod";
 
@@ -11,17 +11,26 @@ import { PERIOD } from "#/constants";
 const periodValues = Object.values(PERIOD);
 
 const searchSchema = z.object({
-  period: z.enum(periodValues).default(PERIOD.DAY).catch(PERIOD.DAY),
-  page: z.coerce.number().int().positive().default(1).catch(1),
-  limit: z.coerce.number().int().positive().default(10).catch(10),
+  period: z.enum(periodValues).default(PERIOD.DAY),
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().default(10),
 });
 
 export const Route = createFileRoute("/_app/")({
   validateSearch: searchSchema,
+  search: {
+    middlewares: [
+      stripSearchParams({
+        period: PERIOD.DAY,
+        page: 1,
+        limit: 10,
+      }),
+    ],
+  },
   head: () => ({
     meta: seo({
-      title: "MEVBOTS.NET",
-      description: "MEVBOTS.NET description",
+      title: "MEV bots",
+      description: "Maximal Extractable Value tracker powered by MEVBOTS DAO",
       image:
         "https://raw.githubusercontent.com/stabilitydao/.github/main/os/mevbots.png",
     }),

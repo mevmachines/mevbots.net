@@ -3,50 +3,50 @@ import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
-} from '@tanstack/react-router'
+} from "@tanstack/react-router";
 
-import type { QueryClient } from '@tanstack/react-query'
+import type { QueryClient } from "@tanstack/react-query";
 
-import { seo } from '#/utils'
+import { seo } from "#/utils";
 
-import appCss from '../styles.css?url'
+import appCss from "../styles.css?url";
 
 interface RouterContext {
-  queryClient: QueryClient
+  queryClient: QueryClient;
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   head: () => ({
     meta: [
       {
-        charSet: 'utf-8',
+        charSet: "utf-8",
       },
       {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
+        name: "viewport",
+        content: "width=device-width, initial-scale=1",
       },
       ...seo({
-        title: 'MEVBOTS.NET',
-        description: 'MEVBOTS.NET description',
-        image: '/mevbots.png',
+        title: "MEV bots",
+        description: "Maximal Extractable Value tracker powered by MEVBOTS DAO",
+        image: "/mevbots.png",
       }),
     ],
     links: [
-      { rel: 'stylesheet', href: appCss },
+      { rel: "stylesheet", href: appCss },
       {
-        rel: 'icon',
-        type: 'image/svg+xml',
-        sizes: '32x32',
-        href: '/mevbots.png',
+        rel: "icon",
+        type: "image/svg+xml",
+        sizes: "32x32",
+        href: "/mevbots.png",
       },
       {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap',
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap",
       },
     ],
   }),
   shellComponent: RootDocument,
-})
+});
 
 function RootDocument() {
   return (
@@ -61,5 +61,5 @@ function RootDocument() {
         <Scripts />
       </body>
     </html>
-  )
+  );
 }

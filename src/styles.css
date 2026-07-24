@@ -201,6 +201,8 @@ html {
   width: 100%;
   display: flex;
   flex-direction: column;
+  left: 0;
+  margin: 0 auto;
 }
 
 .content {
@@ -217,13 +219,6 @@ html {
   .container {
     left: 0px;
     min-width: 100%;
-  }
-}
-
-@media screen and (min-width: 1736px) {
-  .container {
-    left: 0;
-    margin: 0 auto;
   }
 }
 
