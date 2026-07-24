@@ -120,19 +120,19 @@ const Home = () => {
             //w-82.5 md:
           >
             <span
-              className="w-1/2"
+              className="w-1/3 md:w-1/2"
               //w-50 md:
             >
               Account
             </span>
             <span
-              className="w-1/4 text-end"
+              className="w-1/3 md:w-1/4 text-end"
               //w-12.5 md:
             >
               Mined
             </span>
             <div
-              className="relative w-1/4 cursor-help"
+              className="relative w-1/3 md:w-1/4 cursor-help"
               //w-20 md:
             >
               <Tooltip content="Profit is currently calculated incorrectly.">
@@ -178,18 +178,18 @@ const Home = () => {
                         )}
                       >
                         <span
-                          className="w-1/2 text-nowrap font-mono"
+                          className="w-1/3 md:w-1/2 text-nowrap font-mono"
                           // w-50 md:
                         >
                           {name ? name : getShortAddress(addr, 6, 6)}
                         </span>
                         <a
-                          className="py-4 w-1/4 text-end cursor-pointer" // w-12.5
+                          className="py-4 w-1/3 md:w-1/4 text-end cursor-pointer" // w-12.5
                           href={`http://dao.host/mevbots?tab=Artifacts&miner=${addr}`}
                         >
                           {mevMined}
                         </a>
-                        <span className="w-1/4 text-end">
+                        <span className="w-1/3 md:w-1/4 text-end">
                           {/*w-20 md:*/}
                           {Number(profit) ? formatNumber(profit, "format") : ""}
                         </span>
