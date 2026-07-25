@@ -4,15 +4,25 @@ import { useSearch, useNavigate } from "@tanstack/react-router";
 
 import { Route } from "#/routes/_app";
 
-import { LoadingTable, SampleFilter, Pagination, Tooltip } from "#/ui";
+import {
+  LoadingTable,
+  SampleFilter,
+  Pagination,
+  Tooltip,
+  AddressField,
+} from "#/ui";
 
-import { useMiners, cn, getShortAddress, formatNumber } from "#/utils";
+import { useMiners, cn, formatNumber } from "#/utils";
 
 import { PERIOD } from "#/constants";
 
 import { ethereumLogo, warningIcon } from "#/assets";
 
+import { chains } from "@daohost/host";
+
 import type { Period } from "#/types";
+
+import type { Address } from "viem";
 
 const Home = () => {
   const navigate = useNavigate({ from: Route.fullPath });
@@ -29,7 +39,7 @@ const Home = () => {
     from: "/_app",
   });
 
-  const _paginationLimit = limit ?? 10;
+  const _paginationLimit = limit ?? 20;
   const _period = period ?? PERIOD.DAY;
   const _page = page ?? 1;
 
@@ -75,7 +85,7 @@ const Home = () => {
     navigate({
       search: (prev) => ({
         ...prev,
-        limit: newLimit === 10 ? undefined : newLimit,
+        limit: newLimit === 20 ? undefined : newLimit,
       }),
       replace: true,
       resetScroll: false,
@@ -111,30 +121,11 @@ const Home = () => {
       </div>
 
       <div className="min-h-85 min-w-full lg:min-w-240 xl:min-w-300">
-        <div
-          className="scrollbar-thin scrollbar-thumb-[#46484C] scrollbar-track-[#101012] lg:hide-scrollbar"
-          //overflow-x-auto md:overflow-x-scroll lg:overflow-x-visible overflow-y-hidden
-        >
-          <div
-            className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-full border-b-0"
-            //w-82.5 md:
-          >
-            <span
-              className="w-1/3 md:w-1/2"
-              //w-50 md:
-            >
-              Account
-            </span>
-            <span
-              className="w-1/3 md:w-1/4 text-end"
-              //w-12.5 md:
-            >
-              Mined
-            </span>
-            <div
-              className="relative w-1/3 md:w-1/4 cursor-help"
-              //w-20 md:
-            >
+        <div className="scrollbar-thin scrollbar-thumb-[#46484C] scrollbar-track-[#101012] lg:hide-scrollbar">
+          <div className="flex items-center bg-[#151618] border border-[#23252A] rounded-t-lg h-12 px-2 md:px-4 whitespace-nowrap text-[12px] font-manrope font-semibold py-2 text-[#97979A] w-full border-b-0">
+            <span className="w-1/3 md:w-1/2">Account</span>
+            <span className="w-1/3 md:w-1/4 text-end">Mined</span>
+            <div className="relative w-1/3 md:w-1/4 cursor-help">
               <Tooltip content="Profit is currently calculated incorrectly.">
                 <div className="flex items-center justify-end gap-1">
                   <img src={warningIcon} alt="Warning" className="w-5 h-5" />
@@ -148,10 +139,7 @@ const Home = () => {
               <LoadingTable />
             </div>
           ) : (
-            <div
-              className="flex flex-col text-[14px] leading-5 bg-[#101012] border-x border-y-0 border-[#23252A] w-full"
-              //w-82.5 md:
-            >
+            <div className="flex flex-col text-[14px] leading-5 bg-[#101012] border-x border-y-0 border-[#23252A] w-full">
               {miners?.length ? (
                 miners?.map(
                   (
@@ -177,20 +165,23 @@ const Home = () => {
                           !index && "border-t",
                         )}
                       >
-                        <span
-                          className="w-1/3 md:w-1/2 text-nowrap font-mono"
-                          // w-50 md:
-                        >
-                          {name ? name : getShortAddress(addr, 6, 6)}
+                        <span className="w-1/3 md:w-1/2 text-nowrap font-mono z-10">
+                          <AddressField
+                            explorer={chains["1"].explorer}
+                            address={addr as Address}
+                            name={name}
+                            trim={[4, 6]}
+                          />
                         </span>
-                        <a
-                          className="py-4 w-1/3 md:w-1/4 text-end cursor-pointer" // w-12.5
-                          href={`http://dao.host/mevbots?tab=Artifacts&miner=${addr}`}
-                        >
-                          {mevMined}
-                        </a>
+                        <div className="w-1/3 md:w-1/4 text-end flex items-center justify-end">
+                          <a
+                            className="py-2 bg-brand-600 rounded-lg w-10 md:w-15 text-center text-[14px] leading-5 cursor-pointer"
+                            href={`http://dao.host/mevbots?tab=Artifacts&artifactsPerPage=100&miner=${addr}`}
+                          >
+                            {mevMined}
+                          </a>
+                        </div>
                         <span className="w-1/3 md:w-1/4 text-end">
-                          {/*w-20 md:*/}
                           {Number(profit) ? formatNumber(profit, "format") : ""}
                         </span>
                       </div>

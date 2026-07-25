@@ -2,6 +2,7 @@ import { BgGradient } from "./BgGradient";
 import { CubeLoader } from "./CubeLoader";
 import { Checkbox } from "./Checkbox";
 import { Tooltip } from "./Tooltip";
+import { AddressField } from "./AddressField";
 
 import { DropdownFilter, SampleFilter } from "./Filters";
 
@@ -17,4 +18,5 @@ export {
   DropdownFilter,
   SampleFilter,
   Tooltip,
+  AddressField,
 };
