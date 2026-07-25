@@ -175,7 +175,7 @@ const Home = () => {
                         </span>
                         <div className="w-1/3 md:w-1/4 text-end flex items-center justify-end">
                           <a
-                            className="py-2 bg-brand-400 rounded-lg w-10 md:w-15 text-center text-[14px] leading-5 cursor-pointer"
+                            className="py-2 bg-neutral-1100 border border-neutral-1000 rounded-lg w-10 md:w-15 text-center text-[14px] leading-5 cursor-pointer"
                             href={`http://dao.host/mevbots?tab=Artifacts&artifactsPerPage=100&miner=${addr}`}
                           >
                             {mevMined}
