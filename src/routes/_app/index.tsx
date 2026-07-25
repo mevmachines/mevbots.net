@@ -13,7 +13,7 @@ const periodValues = Object.values(PERIOD);
 const searchSchema = z.object({
   period: z.enum(periodValues).default(PERIOD.DAY),
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().default(10),
+  limit: z.coerce.number().int().positive().default(20),
 });
 
 export const Route = createFileRoute("/_app/")({
@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_app/")({
       stripSearchParams({
         period: PERIOD.DAY,
         page: 1,
-        limit: 10,
+        limit: 20,
       }),
     ],
   },

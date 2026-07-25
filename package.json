@@ -1,7 +1,7 @@
 {
   "name": "mevbotsnet",
   "private": true,
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "imports": {
     "#/*": "./src/*"
@@ -17,6 +17,7 @@
     "check": "prettier --check ."
   },
   "dependencies": {
+    "@daohost/host": "^0.18.6",
     "@floating-ui/react": "^0.27.20",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
@@ -34,6 +35,7 @@
     "react-dom": "^19.2.0",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.1.18",
+    "viem": "^2.55.8",
     "zod": "^4.4.3"
   },
   "devDependencies": {
